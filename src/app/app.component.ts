@@ -19,6 +19,7 @@ export class AppComponent implements OnInit{
   readonly Status = Status;
   private filterSubject = new BehaviorSubject<string>('');
   filterStatus$ = this.filterSubject.asObservable();
+  private dataSubject = new BehaviorSubject<CustomResponse>(null)
 
   constructor(private serverService: ServerService) {}
 
@@ -26,6 +27,7 @@ export class AppComponent implements OnInit{
     this.appState$ = this.serverService.servers$
         .pipe(
             map(response => {
+              this.dataSubject.next(response);
               return { dataState: DataState.LOADED_STATE, appData: response }
             }),
             startWith({ dataState: DataState.LOADING_STATE }),
@@ -34,6 +36,27 @@ export class AppComponent implements OnInit{
               return of({ dataState: DataState.ERROR_STATE, error })
             })
         )
+  }
+
+  pingServer(ipAddress: string): void {
+    this.filterSubject.next(ipAddress);
+    this.appState$ = this.serverService.ping$(ipAddress)
+      .pipe(
+        map(response => {
+          const index = this.dataSubject.value.data.servers.findIndex(server => server.id === response.data.server.id);
+          this.dataSubject.value.data.servers[index] = response.data.server;
+          this.filterSubject.next('');
+
+          return { dataState: DataState.LOADED_STATE, appData: response }
+        }),
+        startWith({ dataState: DataState.LOADED_STATE, appData:  this.dataSubject.value }),
+
+        catchError((error: string) => {
+          this.filterSubject.next(ipAddress);
+
+          return of({ dataState: DataState.ERROR_STATE, error })
+        })
+      )
   }
 
 }
