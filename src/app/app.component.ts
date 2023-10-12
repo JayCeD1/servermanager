@@ -61,7 +61,7 @@ export class AppComponent implements OnInit{
         startWith({ dataState: DataState.LOADED_STATE, appData:  this.dataSubject.value }),
 
         catchError((error: string) => {
-          this.filterSubject.next(ipAddress);
+          this.filterSubject.next('');
           this.notifier.onError(error);
           return of({ dataState: DataState.ERROR_STATE, error })
         })
