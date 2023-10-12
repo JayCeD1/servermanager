@@ -92,7 +92,7 @@ export class AppComponent implements OnInit{
           this.dataSubject.next(
             {...response, data: { servers: [response.data.server, ...this.dataSubject.value.data.servers]}}
           );
-          document.getElementById('closeModal').click();
+
           this.isLoading.next(false);
 
           serverForm.resetForm({ status: this.Status.SERVER_DOWN });
@@ -118,7 +118,7 @@ export class AppComponent implements OnInit{
             {...response, data: { servers: this.dataSubject.value.data.servers.filter(s => s.id !== server.id) }}
           );
           this.notifier.onDefault(response.message);
-          return { dataState: DataState.LOADED_STATE, appData: response }
+          return { dataState: DataState.LOADED_STATE, appData: this.dataSubject.value }
         }),
         startWith({ dataState: DataState.LOADED_STATE, appData:  this.dataSubject.value }),
 
