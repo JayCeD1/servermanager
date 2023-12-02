@@ -1,0 +1,15 @@
+services:
+  server:
+    container_name: serverapp_container
+    build: .
+    image: jayced1/frontserverapp:front
+    ports:
+      - 80:80
+    expose:
+      - 80
+    networks:
+      - internalnet
+
+networks:
+  internalnet:
+    driver: bridge

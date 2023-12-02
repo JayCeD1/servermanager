@@ -4,11 +4,12 @@ import {CustomResponse} from "../interface/custom-response";
 import {catchError, Observable, tap, throwError} from "rxjs";
 import {Server} from "../interface/server";
 import {Status} from "../enum/status.enum";
+import {environment} from "../../environments/environment";
 
 @Injectable({  providedIn: 'root'})
 export class ServerService {
 
-  private readonly apiUrl = 'http://localhost:8080';
+  private readonly apiUrl = environment.API_BASE_URL;
 
   constructor(private http: HttpClient) { }
 
