@@ -1,15 +1,15 @@
 <div class="container">
   <div>
-    <div >
-      <div >
+    <div>
+      <div>
         <div class="row bg-secondary p-3">
           <div class="col-sm-6 text-white">
             <h2>Manage Servers</h2>
           </div>
           <div class="col-sm-6 right-align">
-            <span >
+            <span>
                 <select (ngModelChange)="filterServers($event)"
-                  ngModel="ALL" name="status" class="btn btn-info p-2 text-white">
+                        ngModel="ALL" name="status" class="btn btn-info p-2 text-white">
                   <option value="ALL">ALL</option>
                   <option value="SERVER_UP">SERVER UP</option>
                   <option value="SERVER_DOWN">SERVER DOWN</option>
@@ -25,7 +25,8 @@
             <button (click)="printReport()" type="button" class="btn btn-primary ">Print Report</button>
           </div>
         </div>
-      </div> <br>
+      </div>
+      <br>
       <ng-container *ngIf="(appState$ | async) as appState" [ngSwitch]="appState.dataState">
         <ng-container *ngSwitchCase="DataState.LOADING_STATE">
           <div class="col-md-12 text-center">
@@ -50,29 +51,31 @@
             </thead>
             <tbody *ngFor="let server of appState.appData.data.servers">
             <tr>
-              <td> <img [src]="server.imageUrl" width="40" height="40" [alt]="server.name"></td>
-              <td>{{server.ipAddress}}</td>
-              <td>{{server.name}}</td>
-              <td>{{server.memory}}</td>
-              <td>{{server.type}}</td>
+              <td><img [src]="server.imageUrl" width="40" height="40" [alt]="server.name"></td>
+              <td>{{ server.ipAddress }}</td>
+              <td>{{ server.name }}</td>
+              <td>{{ server.memory }}</td>
+              <td>{{ server.type }}</td>
               <td>
                   <span class="badge"
                         [ngClass]="[server.status === Status.SERVER_UP ? 'bg-success' : 'bg-danger']"
                   >
-                    {{ server.status === Status.SERVER_UP ? 'SERVER UP' : 'SERVER DOWN'}}
+                    {{ server.status === Status.SERVER_UP ? 'SERVER UP' : 'SERVER DOWN' }}
                   </span>
               </td>
               <td>
                 <a (click)="pingServer(server.ipAddress)" style="cursor: pointer;">
-                  <i class="bi bi-router-fill" *ngIf="(filterStatus$ | async) === '' || (filterStatus$ | async ) !== server.ipAddress"></i>
+                  <i class="bi bi-router-fill"
+                     *ngIf="(filterStatus$ | async) === '' || (filterStatus$ | async ) !== server.ipAddress"></i>
                   <div *ngIf="(filterStatus$ | async) === server.ipAddress"
-                    class="spinner-grow spinner-grow-sm" role="status">
+                       class="spinner-grow spinner-grow-sm" role="status">
                     <span class="visually-hidden">Loading...</span>
                   </div>
                 </a>
               </td>
               <td>
-                <a (click)="deleteServer(server)" title="Delete" class="delete" data-toggle="modal" style="cursor:pointer;">
+                <a (click)="deleteServer(server)" title="Delete" class="delete" data-toggle="modal"
+                   style="cursor:pointer;">
                   <i class="bi bi-trash3-fill text-danger"></i>
                 </a>
               </td>
@@ -82,7 +85,7 @@
         </ng-container>
         <ng-container *ngSwitchCase="DataState.ERROR_STATE">
           <div class="alert alert-danger" role="alert">
-            {{appState.error}}
+            {{ appState.error }}
           </div>
         </ng-container>
       </ng-container>
